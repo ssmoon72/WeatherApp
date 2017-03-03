@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Weather App </title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('form').submit(function() {
+          var city = $("input[name=weatherCity]").val();
+          console.log(city);
+        $.get("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&&appid=98967709ab151163af41aa12e8fadedc", function(res) {
+            console.log(res);
+            var html_string = "";
+            html_string += "<h1> " + res.name + ", " + res.sys.country + " " + "(" + res.coord.lat + ", " + res.coord.lon + ")</h1>";
+            html_string += "<h3> Temperature: " + Math.floor((res.main.temp * (9/5) - 459.67)) + "&deg</h3><h3> High: " + Math.floor((res.main.temp_max * (9/5) - 459.67)) + "&deg</h3> <h3> Low: " + Math.floor((res.main.temp_min * (9/5) - 459.67)) + "&deg</h3><h3> Humidity: " + res.main.humidity + "&#37</h3><h3> <h3> Wind Speed: " + res.wind.speed + "MPH</h3>";
+            $("#weatherContainer").html(html_string);
+        }, 'json');
+        // don't forget to return false so the page doesn't refresh
+        return false;
+    });
+  });
+
+    </script>
+  </head>
+  <body>
+    <form id="citySearch" action="process.php" method="post">
+      <input type="text" id="weatherCity" name="weatherCity">
+      <input type="submit" value="Find Weather">
+
+    </form>
+    <div id="weatherContainer"></div>
+  </body>
+</html>
